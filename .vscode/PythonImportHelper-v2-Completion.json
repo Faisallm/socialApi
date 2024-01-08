@@ -1,0 +1,54 @@
+[
+    {
+        "label": "FastAPI",
+        "importPath": "fastapi",
+        "description": "fastapi",
+        "isExtraImport": true,
+        "detail": "fastapi",
+        "documentation": {}
+    },
+    {
+        "label": "Body",
+        "importPath": "fastapi.params",
+        "description": "fastapi.params",
+        "isExtraImport": true,
+        "detail": "fastapi.params",
+        "documentation": {}
+    },
+    {
+        "label": "root",
+        "kind": 2,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "def root():\n    return {\"message\": \"Faisal's API\"}\n@app.get('/posts')\ndef get_posts():\n    return {\"data\": \"This is your posts\"}\n# the name of the function never matters.\n# variable payload\n# of type python dictionary\n# data stored in Body(...)\n@app.post('/createposts')",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "get_posts",
+        "kind": 2,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "def get_posts():\n    return {\"data\": \"This is your posts\"}\n# the name of the function never matters.\n# variable payload\n# of type python dictionary\n# data stored in Body(...)\n@app.post('/createposts')\ndef create_post(payload: dict = Body(...)):\n    # extracting data sent with post request and returning it\n    return {\"new_post\": f\"Title: {payload['title']}, Content: {payload['content']}\"}",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "create_post",
+        "kind": 2,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "def create_post(payload: dict = Body(...)):\n    # extracting data sent with post request and returning it\n    return {\"new_post\": f\"Title: {payload['title']}, Content: {payload['content']}\"}\n# we want to force to force the user to send the data in a schema that we expect.",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "app",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "app = FastAPI()\n# the order of path operations matter.\n# this is like the homepage\n# out http get method\n@app.get('/')\ndef root():\n    return {\"message\": \"Faisal's API\"}\n@app.get('/posts')\ndef get_posts():\n    return {\"data\": \"This is your posts\"}",
+        "detail": "main",
+        "documentation": {}
+    }
+]
