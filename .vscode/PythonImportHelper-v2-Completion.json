@@ -16,11 +16,53 @@
         "documentation": {}
     },
     {
+        "label": "BaseModel",
+        "importPath": "pydantic",
+        "description": "pydantic",
+        "isExtraImport": true,
+        "detail": "pydantic",
+        "documentation": {}
+    },
+    {
+        "label": "Optional",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "randrange",
+        "importPath": "random",
+        "description": "random",
+        "isExtraImport": true,
+        "detail": "random",
+        "documentation": {}
+    },
+    {
+        "label": "Post",
+        "kind": 6,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "class Post(BaseModel):\n    title: str\n    content: str\n    # published of type boolean with default value of true.\n    # whether this is provided in the body or not.\n    # hence it is also optional field.\n    published: bool = True\n    # Optional int field of default value None\n    # to create optional fields, we need to create default values.\n    rating: Optional[int] = None",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "find_post",
+        "kind": 2,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "def find_post(id):\n    for post in my_posts:\n        if post['id'] == id:\n            return post\n    return \"This post does not exist\"\n# the order of path operations matter.\n# this is like the homepage\n# out http get method\n@app.get('/')\ndef root():",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
         "label": "root",
         "kind": 2,
         "importPath": "main",
         "description": "main",
-        "peekOfCode": "def root():\n    return {\"message\": \"Faisal's API\"}\n@app.get('/posts')\ndef get_posts():\n    return {\"data\": \"This is your posts\"}\n# the name of the function never matters.\n# variable payload\n# of type python dictionary\n# data stored in Body(...)\n@app.post('/createposts')",
+        "peekOfCode": "def root():\n    return {\"message\": \"Faisal's API\"}\n# get all posts\n@app.get('/posts')\ndef get_posts():\n    return {\"data\": my_posts}\n# getting a single post\n# id: int (was done to convert post to integer.)\n@app.get('/posts/{id}')\ndef get_post(id: int):",
         "detail": "main",
         "documentation": {}
     },
@@ -29,7 +71,16 @@
         "kind": 2,
         "importPath": "main",
         "description": "main",
-        "peekOfCode": "def get_posts():\n    return {\"data\": \"This is your posts\"}\n# the name of the function never matters.\n# variable payload\n# of type python dictionary\n# data stored in Body(...)\n@app.post('/createposts')\ndef create_post(payload: dict = Body(...)):\n    # extracting data sent with post request and returning it\n    return {\"new_post\": f\"Title: {payload['title']}, Content: {payload['content']}\"}",
+        "peekOfCode": "def get_posts():\n    return {\"data\": my_posts}\n# getting a single post\n# id: int (was done to convert post to integer.)\n@app.get('/posts/{id}')\ndef get_post(id: int):\n    # the id is given as str...\n    # we shouldn't forget to convert to int.\n    post = find_post(id)\n    return {\"post_detail\": post}",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "get_post",
+        "kind": 2,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "def get_post(id: int):\n    # the id is given as str...\n    # we shouldn't forget to convert to int.\n    post = find_post(id)\n    return {\"post_detail\": post}\n# the name of the function never matters.\n# variable payload\n# of type python dictionary\n# data stored in Body(...)\n# when we use pydantic new_post: Post.",
         "detail": "main",
         "documentation": {}
     },
@@ -38,7 +89,7 @@
         "kind": 2,
         "importPath": "main",
         "description": "main",
-        "peekOfCode": "def create_post(payload: dict = Body(...)):\n    # extracting data sent with post request and returning it\n    return {\"new_post\": f\"Title: {payload['title']}, Content: {payload['content']}\"}\n# we want to force to force the user to send the data in a schema that we expect.",
+        "peekOfCode": "def create_post(post: Post):\n    # convert pydantic model to dictionary\n    post_dict = post.dict()\n    # assign a random id between 0 and 1 million\n    post_dict['id'] = randrange(0, 1000000)\n    # save the new post to memory\n    my_posts.append(post_dict)\n    # return the new post to the user.\n    print(my_posts)\n    return {\"data\": post_dict}",
         "detail": "main",
         "documentation": {}
     },
@@ -47,7 +98,16 @@
         "kind": 5,
         "importPath": "main",
         "description": "main",
-        "peekOfCode": "app = FastAPI()\n# the order of path operations matter.\n# this is like the homepage\n# out http get method\n@app.get('/')\ndef root():\n    return {\"message\": \"Faisal's API\"}\n@app.get('/posts')\ndef get_posts():\n    return {\"data\": \"This is your posts\"}",
+        "peekOfCode": "app = FastAPI()\n# we want to force to force the user to send the data in a schema that we expect.\n# to create that schema, we need pydantic\nclass Post(BaseModel):\n    title: str\n    content: str\n    # published of type boolean with default value of true.\n    # whether this is provided in the body or not.\n    # hence it is also optional field.\n    published: bool = True",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "my_posts",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "my_posts = [{\"title\": \"Top Beaches in Lasgidi\", \"content\": \"Check out these awesome beaches\", \"id\": 1}, \\\n    {\"title\": \"Favourite Foods\", \"content\": \"I like pizza\", \"id\": 2}]\ndef find_post(id):\n    for post in my_posts:\n        if post['id'] == id:\n            return post\n    return \"This post does not exist\"\n# the order of path operations matter.\n# this is like the homepage\n# out http get method",
         "detail": "main",
         "documentation": {}
     }
