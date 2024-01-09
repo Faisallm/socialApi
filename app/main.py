@@ -21,9 +21,8 @@ class Post(BaseModel):
     rating: Optional[int] = None
     
     
-my_posts = [{"title": "Top Beaches in Lasgidi", "content": "Check out these awesome beaches", "id": 1}, \
+my_posts = [{"title": "Top Beaches in Lasgidi laguna", "content": "Check out these awesome beaches", "id": 1}, \
     {"title": "Favourite Foods", "content": "I like pizza", "id": 2}]
-
 
 def find_post(id):
     for post in my_posts:
@@ -34,6 +33,8 @@ def find_post_index(id):
     for index, post in enumerate(my_posts):
         if post['id'] == id:
             return index
+        
+# def update_post()
 
 # the order of path operations matter.
 
@@ -41,7 +42,7 @@ def find_post_index(id):
 # out http get method
 @app.get('/')
 def root():
-    return {"message": "Faisal's API"}
+    return {"message": "Faisal's Application Programming Interface (API)"}
 
 # get all posts
 @app.get('/posts')
@@ -102,5 +103,20 @@ def delete_post(id: int):
     my_posts.pop(post_index)
     
     return Response(status_code=status.HTTP_204_NO_CONTENT)
+    
+    
+    
+@app.put("/posts/{id}")
+def update_post(id: int, post: Post):
+    # deleting post
+    post_index = find_post_index(id)
+    
+    if not post_index:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                             detail=f'Post with id {id} does not exist!')
+    post_dict = post.dict()
+    post_dict['id'] = id
+    my_posts[post_index] = post_dict
+    return {'message': my_posts[post_index]}
     
     
