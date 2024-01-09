@@ -77,7 +77,16 @@
         "kind": 2,
         "importPath": "main",
         "description": "main",
-        "peekOfCode": "def find_post(id):\n    for post in my_posts:\n        if post['id'] == id:\n            return post\n# the order of path operations matter.\n# this is like the homepage\n# out http get method\n@app.get('/')\ndef root():\n    return {\"message\": \"Faisal's API\"}",
+        "peekOfCode": "def find_post(id):\n    for post in my_posts:\n        if post['id'] == id:\n            return post\ndef find_post_index(id):\n    for index, post in enumerate(my_posts):\n        if post['id'] == id:\n            return index\n# the order of path operations matter.\n# this is like the homepage",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "find_post_index",
+        "kind": 2,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "def find_post_index(id):\n    for index, post in enumerate(my_posts):\n        if post['id'] == id:\n            return index\n# the order of path operations matter.\n# this is like the homepage\n# out http get method\n@app.get('/')\ndef root():\n    return {\"message\": \"Faisal's API\"}",
         "detail": "main",
         "documentation": {}
     },
@@ -127,6 +136,15 @@
         "documentation": {}
     },
     {
+        "label": "delete_post",
+        "kind": 2,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "def delete_post(id: int):\n    # deleting post\n    post_index = find_post_index(id)\n    if not post_index:\n        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,\n                             detail=f'Post with id {id} does not exist!')\n    print(post_index)\n    my_posts.pop(post_index)\n    return Response(status_code=status.HTTP_204_NO_CONTENT)",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
         "label": "app",
         "kind": 5,
         "importPath": "main",
@@ -140,7 +158,7 @@
         "kind": 5,
         "importPath": "main",
         "description": "main",
-        "peekOfCode": "my_posts = [{\"title\": \"Top Beaches in Lasgidi\", \"content\": \"Check out these awesome beaches\", \"id\": 1}, \\\n    {\"title\": \"Favourite Foods\", \"content\": \"I like pizza\", \"id\": 2}]\ndef find_post(id):\n    for post in my_posts:\n        if post['id'] == id:\n            return post\n# the order of path operations matter.\n# this is like the homepage\n# out http get method\n@app.get('/')",
+        "peekOfCode": "my_posts = [{\"title\": \"Top Beaches in Lasgidi\", \"content\": \"Check out these awesome beaches\", \"id\": 1}, \\\n    {\"title\": \"Favourite Foods\", \"content\": \"I like pizza\", \"id\": 2}]\ndef find_post(id):\n    for post in my_posts:\n        if post['id'] == id:\n            return post\ndef find_post_index(id):\n    for index, post in enumerate(my_posts):\n        if post['id'] == id:\n            return index",
         "detail": "main",
         "documentation": {}
     }

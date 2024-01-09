@@ -29,6 +29,11 @@ def find_post(id):
     for post in my_posts:
         if post['id'] == id:
             return post
+        
+def find_post_index(id):
+    for index, post in enumerate(my_posts):
+        if post['id'] == id:
+            return index
 
 # the order of path operations matter.
 
@@ -84,3 +89,18 @@ def create_post(post: Post):
     print(my_posts)
     return {"data": post_dict}
 
+
+@app.delete("/posts/{id}", status_code=status.HTTP_204_NO_CONTENT)
+def delete_post(id: int):
+    # deleting post
+    post_index = find_post_index(id)
+    
+    if not post_index:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                             detail=f'Post with id {id} does not exist!')
+    print(post_index)
+    my_posts.pop(post_index)
+    
+    return Response(status_code=status.HTTP_204_NO_CONTENT)
+    
+    
