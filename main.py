@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Response, status, HTTPException
 from fastapi.params import Body
 from pydantic import BaseModel
 from typing import Optional
@@ -29,8 +29,6 @@ def find_post(id):
     for post in my_posts:
         if post['id'] == id:
             return post
-        
-    return "This post does not exist"
 
 # the order of path operations matter.
 
@@ -45,15 +43,27 @@ def root():
 def get_posts():
     return {"data": my_posts}
 
+# this function should come before...
+# /posts/{id}
+# the order of functions throughly matters
+@app.get('/posts/latest')
+def get_latest():
+    post = my_posts[len(my_posts)-1]
+    return {'data': post}
+    
+
 # getting a single post
 # id: int (was done to convert post to integer.)
 @app.get('/posts/{id}')
-def get_post(id: int):
+def get_post(id: int, response: Response):
     # the id is given as str...
     # we shouldn't forget to convert to int.
     post = find_post(id)
+    if not post:
+        # if post is null
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                            detail=f"post with id: {id}, was not found")
     return {"post_detail": post}
-    
 
 # the name of the function never matters.
 # variable payload
@@ -62,7 +72,7 @@ def get_post(id: int):
 
 # when we use pydantic new_post: Post.
 # fastapi automatically validates the data for us.
-@app.post('/posts')
+@app.post('/posts', status_code=status.HTTP_201_CREATED)
 def create_post(post: Post):
     # convert pydantic model to dictionary
     post_dict = post.dict()

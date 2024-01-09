@@ -8,6 +8,30 @@
         "documentation": {}
     },
     {
+        "label": "Response",
+        "importPath": "fastapi",
+        "description": "fastapi",
+        "isExtraImport": true,
+        "detail": "fastapi",
+        "documentation": {}
+    },
+    {
+        "label": "status",
+        "importPath": "fastapi",
+        "description": "fastapi",
+        "isExtraImport": true,
+        "detail": "fastapi",
+        "documentation": {}
+    },
+    {
+        "label": "HTTPException",
+        "importPath": "fastapi",
+        "description": "fastapi",
+        "isExtraImport": true,
+        "detail": "fastapi",
+        "documentation": {}
+    },
+    {
         "label": "Body",
         "importPath": "fastapi.params",
         "description": "fastapi.params",
@@ -53,7 +77,7 @@
         "kind": 2,
         "importPath": "main",
         "description": "main",
-        "peekOfCode": "def find_post(id):\n    for post in my_posts:\n        if post['id'] == id:\n            return post\n    return \"This post does not exist\"\n# the order of path operations matter.\n# this is like the homepage\n# out http get method\n@app.get('/')\ndef root():",
+        "peekOfCode": "def find_post(id):\n    for post in my_posts:\n        if post['id'] == id:\n            return post\n# the order of path operations matter.\n# this is like the homepage\n# out http get method\n@app.get('/')\ndef root():\n    return {\"message\": \"Faisal's API\"}",
         "detail": "main",
         "documentation": {}
     },
@@ -62,7 +86,7 @@
         "kind": 2,
         "importPath": "main",
         "description": "main",
-        "peekOfCode": "def root():\n    return {\"message\": \"Faisal's API\"}\n# get all posts\n@app.get('/posts')\ndef get_posts():\n    return {\"data\": my_posts}\n# getting a single post\n# id: int (was done to convert post to integer.)\n@app.get('/posts/{id}')\ndef get_post(id: int):",
+        "peekOfCode": "def root():\n    return {\"message\": \"Faisal's API\"}\n# get all posts\n@app.get('/posts')\ndef get_posts():\n    return {\"data\": my_posts}\n# this function should come before...\n# /posts/{id}\n# the order of functions throughly matters\n@app.get('/posts/latest')",
         "detail": "main",
         "documentation": {}
     },
@@ -71,7 +95,16 @@
         "kind": 2,
         "importPath": "main",
         "description": "main",
-        "peekOfCode": "def get_posts():\n    return {\"data\": my_posts}\n# getting a single post\n# id: int (was done to convert post to integer.)\n@app.get('/posts/{id}')\ndef get_post(id: int):\n    # the id is given as str...\n    # we shouldn't forget to convert to int.\n    post = find_post(id)\n    return {\"post_detail\": post}",
+        "peekOfCode": "def get_posts():\n    return {\"data\": my_posts}\n# this function should come before...\n# /posts/{id}\n# the order of functions throughly matters\n@app.get('/posts/latest')\ndef get_latest():\n    post = my_posts[len(my_posts)-1]\n    return {'data': post}\n# getting a single post",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "get_latest",
+        "kind": 2,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "def get_latest():\n    post = my_posts[len(my_posts)-1]\n    return {'data': post}\n# getting a single post\n# id: int (was done to convert post to integer.)\n@app.get('/posts/{id}')\ndef get_post(id: int, response: Response):\n    # the id is given as str...\n    # we shouldn't forget to convert to int.\n    post = find_post(id)",
         "detail": "main",
         "documentation": {}
     },
@@ -80,7 +113,7 @@
         "kind": 2,
         "importPath": "main",
         "description": "main",
-        "peekOfCode": "def get_post(id: int):\n    # the id is given as str...\n    # we shouldn't forget to convert to int.\n    post = find_post(id)\n    return {\"post_detail\": post}\n# the name of the function never matters.\n# variable payload\n# of type python dictionary\n# data stored in Body(...)\n# when we use pydantic new_post: Post.",
+        "peekOfCode": "def get_post(id: int, response: Response):\n    # the id is given as str...\n    # we shouldn't forget to convert to int.\n    post = find_post(id)\n    if not post:\n        # if post is null\n        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,\n                            detail=f\"post with id: {id}, was not found\")\n    return {\"post_detail\": post}\n# the name of the function never matters.",
         "detail": "main",
         "documentation": {}
     },
@@ -107,7 +140,7 @@
         "kind": 5,
         "importPath": "main",
         "description": "main",
-        "peekOfCode": "my_posts = [{\"title\": \"Top Beaches in Lasgidi\", \"content\": \"Check out these awesome beaches\", \"id\": 1}, \\\n    {\"title\": \"Favourite Foods\", \"content\": \"I like pizza\", \"id\": 2}]\ndef find_post(id):\n    for post in my_posts:\n        if post['id'] == id:\n            return post\n    return \"This post does not exist\"\n# the order of path operations matter.\n# this is like the homepage\n# out http get method",
+        "peekOfCode": "my_posts = [{\"title\": \"Top Beaches in Lasgidi\", \"content\": \"Check out these awesome beaches\", \"id\": 1}, \\\n    {\"title\": \"Favourite Foods\", \"content\": \"I like pizza\", \"id\": 2}]\ndef find_post(id):\n    for post in my_posts:\n        if post['id'] == id:\n            return post\n# the order of path operations matter.\n# this is like the homepage\n# out http get method\n@app.get('/')",
         "detail": "main",
         "documentation": {}
     }
